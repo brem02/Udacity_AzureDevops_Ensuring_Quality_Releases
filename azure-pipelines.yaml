@@ -9,17 +9,17 @@ stages:
           vmimage: "ubuntu-18.04"
         steps:
           - task: DownloadSecureFile@1
-            displayName: Download terraform.tfvars file
+            displayName: "Download terraform.tfvars file"
             name: tfvars
             inputs:
               secureFile: "terraform.tfvars"
 
           - script: |
               sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
-            displayName: Copy terraform.tfvars file
+            displayName: "Copy terraform.tfvars file"
 
           - task: TerraformInstaller@0
-            displayName: Install Terraform
+            displayName: "Install Terraform"
             inputs:
               terraformVersion: "0.14.9"
 
@@ -28,12 +28,22 @@ stages:
             inputs:
               provider: "azurerm"
               command: "init"
-              #backendServiceArm: "terraform-sa"
-              #backendAzureRmResourceGroupName: "terraform"
-              #backendAzureRmStorageAccountName: "tstate2176"
-              #backendAzureRmContainerName: "tstate"
-              #backendAzureRmKey: "terraform.state"
+              backendServiceArm: "terraform-sa"
+              backendAzureRmResourceGroupName: "terraform"
+              backendAzureRmStorageAccountName: "tstate2176"
+              backendAzureRmContainerName: "tstate"
+              backendAzureRmKey: "terraform.state"
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+
+          - task: TerraformTaskV1@0
+            displayName: "Terraform apply"
+            inputs:
+              provider: "azurerm"
+              command: "apply"
+              commandOptions: |
+                -auto-approve
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+              environmentServiceNameAzureRM: "terraform-sa"
 # - stage: Build
 #   jobs:
 #   - job: Build
