@@ -29,10 +29,10 @@ stages:
               provider: "azurerm"
               command: "init"
               backendServiceArm: "terraform-sa"
-              backendAzureRmResourceGroupName: "terraform"
+              backendAzureRmResourceGroupName: "tstate"
               backendAzureRmStorageAccountName: "tstate2176"
               backendAzureRmContainerName: "tstate"
-              backendAzureRmKey: "terraform.state"
+              backendAzureRmKey: "terraform.tfstate"
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
 
           - task: TerraformTaskV1@0
@@ -40,10 +40,9 @@ stages:
             inputs:
               provider: "azurerm"
               command: "apply"
-              commandOptions: |
-                -auto-approve
-              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+              commandOptions: "-auto-approve"
               environmentServiceNameAzureRM: "terraform-sa"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
 # - stage: Build
 #   jobs:
 #   - job: Build
