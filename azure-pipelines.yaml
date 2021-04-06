@@ -6,7 +6,7 @@ stages:
       - job: deploy
         displayName: "Deploy infrastructure"
         pool:
-          vmimage: 'ubuntu-18.04'
+          vmimage: "ubuntu-18.04"
         steps:
           - task: DownloadSecureFile@1
             displayName: Download terraform.tfvars file
@@ -28,11 +28,11 @@ stages:
             inputs:
               provider: "azurerm"
               command: "init"
-              backendServiceArm: "terraform-sa"
-              backendAzureRmResourceGroupName: "terraform"
-              backendAzureRmStorageAccountName: "tstate2176"
-              backendAzureRmContainerName: "tstate"
-              backendAzureRmKey: "terraform.state"
+              #backendServiceArm: "terraform-sa"
+              #backendAzureRmResourceGroupName: "terraform"
+              #backendAzureRmStorageAccountName: "tstate2176"
+              #backendAzureRmContainerName: "tstate"
+              #backendAzureRmKey: "terraform.state"
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
 # - stage: Build
 #   jobs:
