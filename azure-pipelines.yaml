@@ -33,7 +33,7 @@ stages:
               targetType: "inline"
               script: |
                 sudo mkdir .ssh
-                sudo cp $(id_rsa_pub.secureFilePath) ~/.ssh/id_rsa.pub
+                sudo cp $(id_rsa_pub.secureFilePath) .ssh/id_rsa.pub
 
           - task: TerraformInstaller@0
             displayName: "Install Terraform"
