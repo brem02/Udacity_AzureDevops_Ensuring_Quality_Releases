@@ -14,9 +14,25 @@ stages:
             inputs:
               secureFile: "terraform.tfvars"
 
-          - script: |
-              sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
+          - task: Bash@3
             displayName: "Copy terraform.tfvars file"
+            inputs:
+              targetType: "inline"
+              script: |
+                sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
+
+          - task: DownloadSecureFile@1
+            displayName: "Download id_rsa.pub file"
+            name: id_rsa_pub
+            inputs:
+              secureFile: "id_rsa.pub"
+
+          - task: Bash@3
+            displayName: "Copy id_rsa.pub file"
+            inputs:
+              targetType: "inline"
+              script: |
+                sudo cp $(id_rsa_pub.secureFilePath) ~/.ssh/id_rsa.pub
 
           - task: TerraformInstaller@0
             displayName: "Install Terraform"
