@@ -22,6 +22,18 @@ stages:
             displayName: Install Terraform
             inputs:
               terraformVersion: "0.14.9"
+
+          - task: TerraformTaskV1@0
+            displayName: "Terraform init"
+            inputs:
+              provider: "azurerm"
+              command: "init"
+              backendServiceArm: "terraform-sa"
+              backendAzureRmResourceGroupName: "terraform"
+              backendAzureRmStorageAccountName: "tstate2176"
+              backendAzureRmContainerName: "tstate"
+              backendAzureRmKey: "terraform.state"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
 # - stage: Build
 #   jobs:
 #   - job: Build
