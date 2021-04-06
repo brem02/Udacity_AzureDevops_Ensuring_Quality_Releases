@@ -7,7 +7,7 @@ terraform {
   }
   backend "azurerm" {
     resource_group_name  = "tstate"
-    storage_account_name = "tstate00000"
+    storage_account_name = "tstate0000"
     container_name       = "tstate"
     key                  = "terraform.tfstate"
     access_key           = "ACCESS_KEY"
@@ -58,4 +58,16 @@ module "publicip" {
   application_type = var.application_type
   resource_type    = "publicip"
   resource_group   = module.resource_group.resource_group_name
+}
+module "virtual_machine" {
+  source               = "../../modules/vm"
+  location             = var.location
+  application_type     = var.application_type
+  resource_type        = "VM"
+  resource_group       = module.resource_group.resource_group_name
+  subnet_id            = module.network.subnet_id_test
+  public_ip_address_id = module.publicip.public_ip_address_id
+  vm_size              = var.vm_size
+  vm_admin_username    = var.vm_admin_username
+  vm_public_key_path   = var.vm_public_key_path
 }
