@@ -6,7 +6,7 @@ stages:
       - job: deploy
         displayName: "Deploy infrastructure"
         pool:
-          name: Hosted Ubuntu 1604
+          vmimage: 'ubuntu-18.04'
         steps:
           - task: DownloadSecureFile@1
             displayName: Download terraform.tfvars file
