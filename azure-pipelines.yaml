@@ -39,6 +39,22 @@ stages:
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
 
           - task: TerraformTaskV1@0
+            displayName: "Terraform validate"
+            inputs:
+              provider: "azurerm"
+              command: "validate"
+              environmentServiceNameAzureRM: "terraform-sa"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+
+          - task: TerraformTaskV1@0
+            displayName: "Terraform plan"
+            inputs:
+              provider: "azurerm"
+              command: "plan"
+              environmentServiceNameAzureRM: "terraform-sa"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+
+          - task: TerraformTaskV1@0
             displayName: "Terraform apply"
             inputs:
               provider: "azurerm"
