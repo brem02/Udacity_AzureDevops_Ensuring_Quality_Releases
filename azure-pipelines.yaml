@@ -21,13 +21,6 @@ stages:
               script: |
                 sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
 
-          - task: InstallSSHKey@0
-            displayName: "Install SSH key"
-            inputs:
-              knownHostsEntry: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ=='
-              sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7Gj2y9Sg/G16rSVNgNgxhFXBqa2CI/MpkMUqFXByUqc3PNzN29ZFxjm/ILDZ2H93lOdP5/ToaZQ4uSi+3KvG5QVBBQdfbawyXUprGgBvVYMd3zL3NEJgZSwHFYyRh3ESoGkSmDrCkOmIXQ4WeAOnaZKZj2yy7J9/Ho4brC0DwTeU29zkX1aHUh6jten5pgjsu6lBTgf/1S/dAaZJVnaGB/a6bmxzDSfJPQbXy/FNm1IDoJsFX8CxcI+H3xqglWV3sG3I1XFfh5M04ReBCPoeEvMtimNkq115wtcrGSVRQGYOpLs9FXQW1QiHM/MULZCJdIXjbjfAgxYjyO6ITXxWdEQGMSm7znKAqy7RzIglBOZaUqkkfHNRL83W3pNqC6C9VWIv/BNxlQmXzL0SOEZIkGiUdB6pU7aZMTGdG0D08A3xyzJly4eShRYVHG8IjbJ43LljqMo/1KJfmfj34cqC7DmDnAqqbPPp7BScXi4vzEJ+L58AsR2XLd+6oBeq32P8/cV0YjZ0yUdMW4XpK/dmb932YwviNli92CvqS27k4/N3rVJlMQijiPVJy3TpKaYoczCB5j25X2w4ARXYy6mdtmSwZOSk3sP9oq1R3KvsuPGZy4WwdR5CdY5g1hS+5Vco0hrUBnhsG5i2IKfubwJ1qxOTHvzTRnk/Il/HK1I9bIQ=='
-              sshKeySecureFile: 'id_rsa'
-
           - task: TerraformInstaller@0
             displayName: "Install Terraform"
             inputs:

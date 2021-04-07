@@ -17,4 +17,4 @@ variable "address_space" {}
 # VM
 variable "vm_size" {}
 variable "vm_admin_username" {}
-variable "vm_public_key_path" {}
+variable "vm_password" {}

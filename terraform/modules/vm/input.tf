@@ -11,4 +11,4 @@ variable "public_ip_address_id" {}
 variable "resource_type" {}
 variable "vm_size" {}
 variable "vm_admin_username" {}
-variable "vm_public_key_path" {}
+variable "vm_password" {}
