@@ -69,5 +69,5 @@ module "virtual_machine" {
   public_ip_address_id = module.publicip.public_ip_address_id
   vm_size              = var.vm_size
   vm_admin_username    = var.vm_admin_username
-  vm_public_key_path   = var.vm_public_key_path
+  vm_password          = var.vm_password
 }
