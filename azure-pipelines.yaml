@@ -62,6 +62,23 @@ stages:
               commandOptions: "-auto-approve"
               environmentServiceNameAzureRM: "terraform-sa"
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+
+  - stage: Build
+    jobs:
+    - job: build_artifacts
+      displayName: "Build Artifacts"
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+      - task: ArchiveFiles@2
+        displayName: "Archive FakeRestAPI"
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+          verbose: true
+              
 # - stage: Build
 #   jobs:
 #   - job: Build
