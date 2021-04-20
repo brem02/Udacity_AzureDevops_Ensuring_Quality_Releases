@@ -1,10 +1,10 @@
 name: Azure Pipelines
 
 stages:
-  - stage: "Deploy"
+  - stage: "Provisioning"
     jobs:
-      - job: deploy_infrastructure
-        displayName: "Deploy infrastructure"
+      - job: provision_infrastructure
+        displayName: "Provision infrastructure"
         pool:
           vmimage: "ubuntu-18.04"
         steps:
