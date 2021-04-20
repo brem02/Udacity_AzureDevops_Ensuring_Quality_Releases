@@ -10,7 +10,7 @@ terraform {
     storage_account_name = "tstate423"
     container_name       = "tstate"
     key                  = "terraform.tfstate"
-    # access_key           = "ACCESS_KEY"
+    access_key           = "JVA1q689scwJybR3j89EH4YydCsLXUmmC4A6OoJEUVyCrQoFbK+Pg1BNTnzDLM4I2eg1d7IwPvh22X9JwKe5kg=="
   }
 }
 provider "azurerm" {
