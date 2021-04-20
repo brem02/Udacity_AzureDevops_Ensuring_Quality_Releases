@@ -3,7 +3,7 @@ name: Azure Pipelines
 stages:
   - stage: "Deploy"
     jobs:
-      - job: deploy
+      - job: deploy_infrastructure
         displayName: "Deploy infrastructure"
         pool:
           vmimage: "ubuntu-18.04"
@@ -123,3 +123,22 @@ stages:
 #               sudo apt-get install -y chromium-browser
 #               pip3 install selenium
 #               export PATH=$PATH:some/path
+
+# stages:
+#   - stage: Build
+#     jobs:
+#     - job: Build
+#       pool:
+#         name: Hosted Ubuntu 1604
+#       steps:
+#       - task: CmdLine@2
+#         displayName: Install Newman
+#         inputs:
+#           script: 'sudo npm install -g newman'
+#           workingDirectory: $(System.DefaultWorkingDirectory)
+#       - task: CmdLine@2
+#         displayName: Run Regression Tests
+#         continueOnError: true
+#         inputs:
+#           script: 'newman run StarterAPIs.json'
+#           workingDirectory: 'starter-code/automatedtesting/postman'
