@@ -76,8 +76,14 @@ stages:
           rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
           verbose: true
+
+      - task: PublishPipelineArtifact@1
+        displayName: "Publish FakeRestAPI artifact"
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+          artifactName: 'fakerestapi'
               
 # - stage: Build
 #   jobs:
