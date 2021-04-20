@@ -70,21 +70,36 @@ stages:
       pool:
         vmImage: 'ubuntu-18.04'
       steps:
-      - task: ArchiveFiles@2
-        displayName: "Archive FakeRestAPI"
-        inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
-          includeRootFolder: false
-          archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-          verbose: true
+        - task: ArchiveFiles@2
+          displayName: "Archive FakeRestAPI"
+          inputs:
+            rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+            verbose: true
 
-      - task: PublishPipelineArtifact@1
-        displayName: "Publish FakeRestAPI artifact"
-        inputs:
-          targetPath: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
-          artifactName: 'fakerestapi'
-              
+        - task: PublishPipelineArtifact@1
+          displayName: "Publish FakeRestAPI artifact"
+          inputs:
+            targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+            artifactName: 'fakerestapi'
+
+        - task: ArchiveFiles@2
+          displayName: "Archive Selenium"
+          inputs:
+            rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
+            verbose: true
+
+        - task: PublishPipelineArtifact@1
+          displayName: "Publish Selenium artifact"
+          inputs:
+            targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
+            artifactName: 'selenium'
+
 # - stage: Build
 #   jobs:
 #   - job: Build
