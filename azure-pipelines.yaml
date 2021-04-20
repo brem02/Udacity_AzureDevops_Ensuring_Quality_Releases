@@ -118,6 +118,7 @@ stages:
                   appType: 'webAppLinux'
                   appName: 'WebApplication-AppService'
                   package: '$(Pipeline.Workspace)/fakerestapi/$(Build.BuildId)-fakerestapi.zip'
+                  runtimeStack: 'PYTHON|3.8'
       
       - deployment: deployment_vm
         displayName: "Deploy Virtual Machine"
