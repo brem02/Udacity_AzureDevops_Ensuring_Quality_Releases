@@ -115,10 +115,9 @@ stages:
                 displayName: "Deploy Azure WebApp"
                 inputs:
                   azureSubscription: 'terraform-sa'
+                  appType: 'webAppLinux'
                   appName: 'WebApplication-AppService'
-                  appType: webApp
-                  package: $(Pipeline.Workspace)/fakerestapi/$(Build.BuildId)-fakerestapi.zip
-                  deploymentMethod: zipDeploy
+                  package: '$(Pipeline.Workspace)/fakerestapi/$(Build.BuildId)-fakerestapi.zip'
       
       - deployment: deployment_vm
         displayName: "Deploy Virtual Machine"
