@@ -135,17 +135,18 @@ stages:
                   targetType: 'inline'
                   script: |
                     #! /bin/bash
-                    python3 --version
-                    which apt-add-repository
+                    export LC_ALL=C
                     sudo apt-get install -y software-properties-common
                     sudo apt-add-repository -y universe
                     sudo apt-add-repository -y ppa:deadsnakes/ppa
                     sudo apt-get -y update
-                    sudo apt-get install -y python3.8 python3-pip unzip chromium-browser chromium-chromedriver
+                    sudo apt-get install -y python3.8 python3.8-distutils python3-pip unzip chromium-browser chromium-chromedriver
                     sudo rm /usr/bin/python3
                     sudo ln -s /usr/bin/python3.8 /usr/bin/python3
-                    pip3 install --upgrade pip
-                    pip3 install selenium
+                    sudo apt remove -y python3-pip
+                    sudo python3.8 -m easy_install pip
+                    sudo pip3 install --upgrade pip
+                    sudo pip3 install selenium
 
   - stage: "Test"
     jobs:
