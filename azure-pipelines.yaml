@@ -137,7 +137,9 @@ stages:
                     #! /bin/bash
                     pwd
                     hostname
-                    sudo apt-get update -y
+                    sudo apt-get install -y software-properties-common
+                    sudo apt-add-repository -y universe
+                    sudo apt-get -y update
                     sudo apt-get install -y python3-pip unzip chromium-browser chromium-chromedriver
                     python3 -m pip install --upgrade pip
                     pip3 install selenium
