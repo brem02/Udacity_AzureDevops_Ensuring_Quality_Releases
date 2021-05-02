@@ -66,7 +66,7 @@ stages:
   - stage: "Build"
     jobs:
     - job: build_artifacts
-      displayName: "Build Artifacts"
+      displayName: "Build artifacts"
       pool:
         vmImage: 'ubuntu-18.04'
       steps:
@@ -80,7 +80,7 @@ stages:
             verbose: true
 
         - task: PublishPipelineArtifact@1
-          displayName: "Publish FakeRestAPI artifact"
+          displayName: "Publish FakeRestAPI"
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
             artifactName: 'fakerestapi'
@@ -95,7 +95,7 @@ stages:
             verbose: true
 
         - task: PublishPipelineArtifact@1
-          displayName: "Publish Selenium artifact"
+          displayName: "Publish Selenium"
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
             artifactName: 'selenium'
@@ -121,7 +121,7 @@ stages:
                   deploymentMethod: 'auto'
       
       - deployment: deployment_vm
-        displayName: "Deploy Virtual Machine"
+        displayName: "Deploy VM"
         environment:
           name: 'Test'
           resourceType: VirtualMachine
@@ -130,19 +130,15 @@ stages:
             deploy:
               steps:
               - task: Bash@3
-                displayName: "Configure selenium"
+                displayName: "Configure Selenium"
                 inputs:
                   targetType: 'inline'
                   script: |
+                    #! /bin/bash
                     pwd
                     hostname
-                    sudo apt-get install software-properties-common -y
-                    sudo apt-add-repository universe -y
                     sudo apt-get update -y
-                    sudo apt-get install python3-pip -y
-                    sudo apt-get install unzip -y
-                    sudo apt-get install -y chromium-browser
-                    sudo apt-get install -y chromium-chromedriver
+                    sudo apt-get install -y python3-pip unzip chromium-browser chromium-chromedriver
                     python3 -m pip install --upgrade pip
                     pip3 install selenium
                     python3 -V
