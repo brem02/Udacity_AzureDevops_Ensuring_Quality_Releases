@@ -135,6 +135,7 @@ stages:
                   targetType: 'inline'
                   script: |
                     #! /bin/bash
+                    python3 --version
                     sudo apt-get install -y software-properties-common
                     sudo apt-add-repository -y universe
                     sudo apt-get -y update
@@ -202,7 +203,8 @@ stages:
                 script: |
                   #! /bin/bash
                   cd $(Pipeline.Workspace)/selenium
-                  find . -type f ! -name 'selenium-$(Build.BuildId).zip' -delete  # delete everything except 'selenium-$(Build.BuildId).zip'
+                  ls -la
+                  # find . -type f ! -name 'selenium-$(Build.BuildId).zip' -delete  # delete everything except 'selenium-$(Build.BuildId).zip'
                   unzip -o selenium-$(Build.BuildId).zip
                   pwd
                   ls -la
