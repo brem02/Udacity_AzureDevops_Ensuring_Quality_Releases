@@ -223,23 +223,23 @@ stages:
                 artifactName: 'selenium-logs'
 
     - job: jmeter_tests
-      displayName: jMeter Tests
+      displayName: JMeter tests
       pool:
         vmImage: 'ubuntu-18.04'
       steps:
         - task: Bash@3
-          displayName: Install jMeter
+          displayName: Install JMeter
           inputs:
             targetType: 'inline'
             script: |
               #! /bin/bash
               sudo apt-get install -y openjdk-11-jre-headless
-              wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz -O jmeter.tgz
-              tar xzvf jmeter.tgz
-              apache-jmeter-5.4.1/bin/jmeter --version
+              wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.4.1.tgz
+              tar xzvf apache-jmeter-5.4.1.tgz
               mkdir -p log/jmeter
+              apache-jmeter-5.4.1/bin/jmeter --version
         - task: Bash@3
-          displayName: Run Stress Test
+          displayName: Run JMeter stress test
           inputs:
             targetType: 'inline'
             script: |
