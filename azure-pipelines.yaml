@@ -135,8 +135,6 @@ stages:
                   targetType: 'inline'
                   script: |
                     #! /bin/bash
-                    pwd
-                    hostname
                     sudo apt-get install -y software-properties-common
                     sudo apt-add-repository -y universe
                     sudo apt-get -y update
@@ -144,10 +142,6 @@ stages:
                     sudo apt autoremove -y
                     pip3 install --upgrade pip
                     pip3 install selenium
-                    python3 -V
-                    pip3 -V
-                    /usr/bin/chromium-browser --version
-                    /usr/bin/chromedriver --version
 
   - stage: Test
     jobs:
@@ -215,7 +209,7 @@ stages:
                   sudo mkdir -p /var/log/selenium
                   sudo chmod 777 /var/log/selenium
                   ls -la
-                  sudo python3 -u tests.py 2>&1 | sudo tee -a '/var/log/selenium/selenium-test-$(Build.BuildId).log'
+                  sudo python3 -u test-suite.py 2>&1 | sudo tee -a '/var/log/selenium/selenium-test-$(Build.BuildId).log'
                   # copy selenium log file to $(System.DefaultWorkingDirectory)/log/selenium/
                   cd $(System.DefaultWorkingDirectory)
                   mkdir -p log/selenium
