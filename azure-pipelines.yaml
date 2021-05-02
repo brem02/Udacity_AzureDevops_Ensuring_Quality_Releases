@@ -25,7 +25,7 @@ stages:
           - task: TerraformInstaller@0
             displayName: "Install Terraform"
             inputs:
-              terraformVersion: "0.14.9"
+              terraformVersion: '0.15.1'
 
           - task: TerraformTaskV1@0
             displayName: "Terraform init"
@@ -138,9 +138,9 @@ stages:
                     sudo apt-get install -y software-properties-common
                     sudo apt-add-repository -y universe
                     sudo apt-get -y update
-                    sudo apt-get install -y python3.6 python3-pip unzip chromium-browser chromium-chromedriver
+                    sudo apt-get install -y python3-pip unzip chromium-browser chromium-chromedriver
                     sudo apt autoremove -y
-                    sudo update-alternatives --set python3 /usr/bin/python3.6
+                    python3 --version
                     pip3 install --upgrade pip
                     pip3 install selenium
 
