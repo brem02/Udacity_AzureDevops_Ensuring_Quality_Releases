@@ -181,6 +181,15 @@ stages:
             --delay-request 5000 \
             --reporters cli,junit --reporter-junit-export output/newman/regression.xml
 
+      - task: PublishTestResults@2
+        displayName: "Publish regression test results"
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '*.xml'
+          searchFolder: '$(System.DefaultWorkingDirectory)/output/newman/'
+          mergeTestResults: true
+          testRunTitle: 'Regression test results'
+
 # - stage: Build
 #   jobs:
 #   - job: Build
