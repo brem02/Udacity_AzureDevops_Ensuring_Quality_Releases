@@ -19,6 +19,7 @@ stages:
             inputs:
               targetType: "inline"
               script: |
+                #! /bin/bash
                 sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
 
           - task: TerraformInstaller@0
@@ -41,10 +42,9 @@ stages:
           - task: TerraformTaskV1@0
             displayName: "Terraform validate"
             inputs:
-              provider: "azurerm"
-              command: "validate"
-              environmentServiceNameAzureRM: "terraform-sa"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+              provider: 'azurerm'
+              command: 'validate'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test/'
 
           - task: TerraformTaskV1@0
             displayName: "Terraform plan"
@@ -66,7 +66,7 @@ stages:
   - stage: "Build"
     jobs:
     - job: build_artifacts
-      displayName: "Build Artifacts"
+      displayName: "Build artifacts"
       pool:
         vmImage: 'ubuntu-18.04'
       steps:
@@ -80,7 +80,7 @@ stages:
             verbose: true
 
         - task: PublishPipelineArtifact@1
-          displayName: "Publish FakeRestAPI artifact"
+          displayName: "Publish FakeRestAPI"
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
             artifactName: 'fakerestapi'
@@ -95,7 +95,7 @@ stages:
             verbose: true
 
         - task: PublishPipelineArtifact@1
-          displayName: "Publish Selenium artifact"
+          displayName: "Publish Selenium"
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
             artifactName: 'selenium'
@@ -121,7 +121,7 @@ stages:
                   deploymentMethod: 'auto'
       
       - deployment: deployment_vm
-        displayName: "Deploy Virtual Machine"
+        displayName: "Deploy VM"
         environment:
           name: 'Test'
           resourceType: VirtualMachine
@@ -130,25 +130,103 @@ stages:
             deploy:
               steps:
               - task: Bash@3
-                displayName: "Configure selenium"
+                displayName: "Configure Selenium"
                 inputs:
                   targetType: 'inline'
                   script: |
+                    #! /bin/bash
                     pwd
                     hostname
-                    sudo apt-get install software-properties-common -y
-                    sudo apt-add-repository universe -y
-                    sudo apt-get update -y
-                    sudo apt-get install python3-pip -y
-                    sudo apt-get install unzip -y
-                    sudo apt-get install -y chromium-browser
-                    sudo apt-get install -y chromium-chromedriver
-                    python3 -m pip install --upgrade pip
+                    sudo apt-get install -y software-properties-common
+                    sudo apt-add-repository -y universe
+                    sudo apt-get -y update
+                    sudo apt-get install -y python3-pip unzip chromium-browser chromium-chromedriver
+                    sudo apt autoremove -y
+                    pip3 install --upgrade pip
                     pip3 install selenium
                     python3 -V
                     pip3 -V
                     /usr/bin/chromium-browser --version
                     /usr/bin/chromedriver --version
+
+  - stage: Test
+    jobs:
+    - job: postman_integration
+      displayName: "Postman integration tests"
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+      
+      - task: NodeTool@0
+        displayName: "Install Node.js"
+        inputs:
+          versionSpec: '14.x'
+          checkLatest: true
+      
+      - task: Bash@3
+        displayName: "Install Newman"
+        inputs:
+          targetType: 'inline'
+          script: |
+            #! /bin/bash
+            npm install -g newman
+            mkdir -p output/newman/
+
+      - task: Bash@3
+        displayName: "Run regression tests"
+        inputs:
+          targetType: 'inline'
+          script: |
+            #! /bin/bash
+            newman run automatedtesting/postman/StarterAPIs.json \
+            --suppress-exit-code \
+            --delay-request 5000 \
+            --reporters cli,junit --reporter-junit-export output/newman/regression.xml
+
+      - task: PublishTestResults@2
+        displayName: "Publish regression test results"
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '*.xml'
+          searchFolder: '$(System.DefaultWorkingDirectory)/output/newman/'
+          mergeTestResults: true
+          testRunTitle: 'Regression test results'
+
+    - deployment: test_vm
+      displayName: "Deploy and run Selenium tests"
+      environment:
+        name: 'Test'
+        resourceType: VirtualMachine
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: Bash@3
+              displayName: "Run Selenium tests"
+              inputs:
+                targetType: 'inline'
+                script: |
+                  #! /bin/bash
+                  cd $(Pipeline.Workspace)/selenium
+                  find . -type f ! -name 'selenium-$(Build.BuildId).zip' -delete  # delete everything except 'selenium-$(Build.BuildId).zip'
+                  unzip -o selenium-$(Build.BuildId).zip
+                  pwd
+                  ls -la
+                  sudo mkdir -p /var/log/selenium
+                  sudo chmod 777 /var/log/selenium
+                  ls -la
+                  sudo python3 -u tests.py 2>&1 | sudo tee -a '/var/log/selenium/selenium-test-$(Build.BuildId).log'
+                  # copy selenium log file to $(System.DefaultWorkingDirectory)/log/selenium/
+                  cd $(System.DefaultWorkingDirectory)
+                  mkdir -p log/selenium
+                  pwd
+                  sudo cp '/var/log/selenium/selenium-test-$(Build.BuildId).log' 'log/selenium/selenium-test-$(Build.BuildId).log'
+                  ls -la
+            - task: PublishPipelineArtifact@1
+              displayName: "Publish Selenium logs"
+              inputs:
+                targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium-test-$(Build.BuildId).log'
+                artifactName: 'selenium-logs'
 
 # - stage: Build
 #   jobs:
