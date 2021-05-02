@@ -170,13 +170,13 @@ stages:
           script: |
             npm install -g newman
             mkdir -p output/newman/
+
       - task: Bash@3
-        displayName: Run Regression Tests
+        displayName: "Run regression tests"
         inputs:
           targetType: 'inline'
           script: |
-            newman run automatedtesting/postman/DummyRestAPI_Regression.postman_collection.json \
-            --environment automatedtesting/postman/DummyEnv.postman_environment.json \
+            newman run automatedtesting/postman/StarterAPIs.json \
             --suppress-exit-code \
             --delay-request 5000 \
             --reporters cli,junit --reporter-junit-export output/newman/regression.xml
