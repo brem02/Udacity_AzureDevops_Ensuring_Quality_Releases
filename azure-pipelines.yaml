@@ -135,6 +135,7 @@ stages:
                   targetType: 'inline'
                   script: |
                     #! /bin/bash
+                    ln -s /usr/bin/python3.5 /usr/bin/python3
                     sudo apt-get install -y software-properties-common
                     sudo apt-add-repository -y universe
                     sudo apt-add-repository -y ppa:deadsnakes/ppa
