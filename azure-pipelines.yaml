@@ -142,12 +142,44 @@ stages:
                     sudo apt-get -y update
                     sudo apt-get install -y python3-pip unzip chromium-browser chromium-chromedriver
                     sudo apt autoremove -y
-                    python3 -m pip install --upgrade pip
+                    pip3 install --upgrade pip
                     pip3 install selenium
-                    #python3 -V
-                    #pip3 -V
+                    python3 -V
+                    pip3 -V
                     /usr/bin/chromium-browser --version
                     /usr/bin/chromedriver --version
+
+  - stage: Test
+    jobs:
+    - job: postman_integration
+      displayName: "Postman integration tests"
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+      
+      - task: NodeTool@0
+        displayName: "Install Node.js"
+        inputs:
+          versionSpec: '14.x'
+          checkLatest: true
+      
+      - task: Bash@3
+        displayName: "Install Newman"
+        inputs:
+          targetType: 'inline'
+          script: |
+            npm install -g newman
+            mkdir -p output/newman/
+      - task: Bash@3
+        displayName: Run Regression Tests
+        inputs:
+          targetType: 'inline'
+          script: |
+            newman run automatedtesting/postman/DummyRestAPI_Regression.postman_collection.json \
+            --environment automatedtesting/postman/DummyEnv.postman_environment.json \
+            --suppress-exit-code \
+            --delay-request 5000 \
+            --reporters cli,junit --reporter-junit-export output/newman/regression.xml
 
 # - stage: Build
 #   jobs:
