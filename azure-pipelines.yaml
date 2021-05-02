@@ -270,7 +270,7 @@ stages:
             displayName: "Publish JMeter logs"
             inputs:
               targetPath: "$(System.DefaultWorkingDirectory)/log/jmeter"
-              artifactName: "drop-jmeter-logs"
+              artifactName: "jmeter-logs"
 
   # Uncomment to destroy the infrastructure
   # - stage: "Destroy"
