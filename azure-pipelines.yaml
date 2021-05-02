@@ -30,9 +30,14 @@ stages:
           - task: TerraformTaskV1@0
             displayName: "Terraform init"
             inputs:
-              provider: "azurerm"
-              command: "init"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test/'
+              backendServiceArm: 'terraform-sa'
+              backendAzureRmResourceGroupName: 'tstate'
+              backendAzureRmStorageAccountName: 'tstate5275'
+              backendAzureRmContainerName: 'tstate'
+              backendAzureRmKey: 'terraform.tfstate'
 
           - task: TerraformTaskV1@0
             displayName: "Terraform validate"
