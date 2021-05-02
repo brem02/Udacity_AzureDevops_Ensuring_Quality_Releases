@@ -76,13 +76,13 @@ stages:
             rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
             includeRootFolder: false
             archiveType: 'zip'
-            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
             verbose: true
 
         - task: PublishPipelineArtifact@1
           displayName: "Publish FakeRestAPI"
           inputs:
-            targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+            targetPath: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
             artifactName: 'fakerestapi'
 
         - task: ArchiveFiles@2
@@ -91,13 +91,13 @@ stages:
             rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
             includeRootFolder: false
             archiveType: 'zip'
-            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
             verbose: true
 
         - task: PublishPipelineArtifact@1
           displayName: "Publish Selenium"
           inputs:
-            targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
+            targetPath: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
             artifactName: 'selenium'
 
   - stage: "Deploy"
@@ -117,7 +117,7 @@ stages:
                   azureSubscription: 'terraform-sa'
                   appType: 'webAppLinux'
                   appName: 'WebApplication-AppService'
-                  package: '$(Pipeline.Workspace)/fakerestapi/$(Build.BuildId)-fakerestapi.zip'
+                  package: '$(Pipeline.Workspace)/fakerestapi/fakerestapi-$(Build.BuildId).zip'
                   deploymentMethod: 'auto'
       
       - deployment: deployment_vm
@@ -137,7 +137,7 @@ stages:
                     #! /bin/bash
                     sudo apt-get install -y software-properties-common
                     sudo apt-add-repository -y universe
-                    sudo add-apt-repository ppa:deadsnakes/ppa
+                    sudo add-apt-repository -y ppa:deadsnakes/ppa
                     sudo apt-get -y update
                     sudo apt-get install -y python3.8 python3-pip unzip chromium-browser chromium-chromedriver
                     sudo apt autoremove -y
@@ -146,7 +146,7 @@ stages:
                     pip3 install --upgrade pip
                     pip3 install selenium
 
-  - stage: Test
+  - stage: "Test"
     jobs:
     - job: postman_integration
       displayName: "Postman integration tests"
@@ -244,8 +244,8 @@ stages:
 #         rootFolderOrFile: 'path/to/fakerestapi'
 #         includeRootFolder: false
 #         archiveType: 'zip'
-#         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-#     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+#         archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+#     - publish: $(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip
 #       displayName: 'Upload Package'
 #       artifact: drop-fakerestapi
 # - stage:
@@ -264,7 +264,7 @@ stages:
 #               azureSubscription: ''
 #               appName: ''
 #               appType: webApp
-#               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+#               package: $(Pipeline.Workspace)/drop-fakerestapi/fakerestapi-$(Build.BuildId).zip
 # - deployment: VMDeploy
 #   displayName: NAME
 #   environment:
