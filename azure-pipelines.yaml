@@ -177,7 +177,8 @@ stages:
               targetType: "inline"
               script: |
                 #! /bin/bash
-                newman run automatedtesting/postman/StarterAPIs.json \
+                newman run automatedtesting/postman/TestRestAPI_Regression.postman_collection.json \
+                --environment automatedtesting/postman/TestEnv.postman_environment.json \
                 --suppress-exit-code \
                 --delay-request 5000 \
                 --reporters cli,junit --reporter-junit-export output/newman/regression.xml
