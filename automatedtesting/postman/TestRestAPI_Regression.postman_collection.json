@@ -35,7 +35,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://dummy.restapiexample.com/api/v1/create",
+					"raw": "{{app}}/api/v1/create",
 					"protocol": "http",
 					"host": [
 						"dummy",
@@ -71,7 +71,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://dummy.restapiexample.com/api/v1/employees",
+					"raw": "{{app}}/api/v1/employees",
 					"protocol": "http",
 					"host": [
 						"dummy",
