@@ -309,21 +309,34 @@ Screenshot of the successful execution of the pipeline build results page:
 
 #### Postman
 
-Three screenshots of the Test Run Results from Postman shown in Azure DevOps. One should be the Run Summary page (which contains 4 graphs), one should be of the Test Results page (which contains the test case titles from each test) and one should be of the output of the Publish Test Results step.
+Three screenshots of the Test Run Results from Postman shown in Azure DevOps.
 
-TBD
+Run summary page (which contains 4 graphs):
+
+![Postman: Run summary](./images/postman-run-summary.png)
+
+Test results page (which contains the test case titles from each test):
+
+![Postman: Test results](./images/postman-test-results.png)
+
+Publish test results step:
+
+![Postman: Publish test results](./images/postman-publish-test-results.png)
+
 
 #### Selenium
 
-A screenshot of the successful execution of the Test Suite on a VM in Azure DevOps should contain which user logged in, which items were added to the cart, and which items were removed from the cart.
+A screenshot of the successful execution of the Test Suite on a VM in Azure DevOps should contain which user logged in, which items were added to the cart, and which items were removed from the cart:
 
-TBD
+![Selenium](./images/selenium-tests.png)
 
 #### JMeter
 
-A screenshot of the log output of JMeter when executed by the CI/CD pipeline (ensure the timestamp is visible by toggle timestamps for the specific job) should contain the lines that start with “summary” and “Starting standalone test @”.
+A screenshot of the log output of JMeter when executed by the CI/CD pipeline (ensure the timestamp is visible by toggle timestamps for the specific job) should contain the lines that start with “summary” and “Starting standalone test @”:
 
-TBD
+![JMeter: Stress test execution](./images/jmeter-stress-test-execution.png)
+
+![JMeter: Endurance test execution](./images/jmeter-endurance-test-execution.png)
 
 ### Monitoring & observability
 
