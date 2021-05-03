@@ -183,14 +183,26 @@ stages:
                 --delay-request 5000 \
                 --reporters cli,junit --reporter-junit-export output/newman/regression.xml
 
+          - task: Bash@3
+            displayName: "Run validation tests"
+            inputs:
+              targetType: "inline"
+              script: |
+                #! /bin/bash
+                newman run automatedtesting/postman/TestRestAPI_Validation.postman_collection.json \
+                --environment automatedtesting/postman/TestEnv.postman_environment.json \
+                --suppress-exit-code \
+                --delay-request 5000 \
+                --reporters cli,junit --reporter-junit-export output/newman/validation.xml
+
           - task: PublishTestResults@2
-            displayName: "Publish regression test results"
+            displayName: "Publish regression and validation test results"
             inputs:
               testResultsFormat: "JUnit"
               testResultsFiles: "*.xml"
               searchFolder: "$(System.DefaultWorkingDirectory)/output/newman/"
               mergeTestResults: true
-              testRunTitle: "Regression test results"
+              testRunTitle: "Regression and validation test results"
 
       - deployment: test_selenium
         displayName: "Deploy and run Selenium tests"
