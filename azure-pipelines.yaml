@@ -49,19 +49,20 @@ stages:
           - task: TerraformTaskV1@0
             displayName: "Terraform plan"
             inputs:
-              provider: "azurerm"
-              command: "plan"
-              environmentServiceNameAzureRM: "terraform-sa"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test/'
+              commandOptions: '-lock=false'
+              environmentServiceNameAzureRM: 'terraform-sa'
 
           - task: TerraformTaskV1@0
             displayName: "Terraform apply"
             inputs:
-              provider: "azurerm"
-              command: "apply"
-              commandOptions: "-auto-approve"
-              environmentServiceNameAzureRM: "terraform-sa"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test/'
+              commandOptions: '-auto-approve -lock=false'
+              environmentServiceNameAzureRM: 'terraform-sa'
 
   - stage: "Build"
     jobs:
