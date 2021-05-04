@@ -35,7 +35,7 @@ stages:
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
               backendServiceArm: "terraform-sa"
               backendAzureRmResourceGroupName: "tstate"
-              backendAzureRmStorageAccountName: "tstate5275"
+              backendAzureRmStorageAccountName: "tstate17968"
               backendAzureRmContainerName: "tstate"
               backendAzureRmKey: "terraform.tfstate"
 
@@ -341,7 +341,7 @@ stages:
   #             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test/'
   #             backendServiceArm: 'terraform-sa'
   #             backendAzureRmResourceGroupName: 'tstate'
-  #             backendAzureRmStorageAccountName: 'tstate5275'
+  #             backendAzureRmStorageAccountName: 'tstate17968'
   #             backendAzureRmContainerName: 'tstate'
   #             backendAzureRmKey: 'terraform.tfstate'
 
