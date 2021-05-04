@@ -121,7 +121,7 @@ Terraform creates the following resources for a specific environment tier:
 - Resource Group
 - Linux VM
 
-You can use the following commands to create the infrastructure:
+Use the following commands to create the infrastructure:
 
 ```bash
 cd terraform/environments/test
@@ -153,20 +153,14 @@ Configure your pipeline by choosing "Existing Azure Pipelines YAML File" and sel
 On the Review page, update the Terraform storage account name:
 
 ```yaml
-backendAzureRmStorageAccountName: "tstate5275"
+backendAzureRmStorageAccountName: "tstate17968"
 ```
 
-Add a new variable for the storage account access key:
+Add a new variable `ARM_ACCESS_KEY` for the storage account access key:
 
 ![Azure DevOps: Variable](./images/azure-devops-arm-access-key.png)
 
 Use the drop down arrow next to "Run" and select "Save". Don't run the pipeline just yet.
-
-Upload your `terraform.tfvars` file as a secure file so you can use it in the pipeline:
-
-![Azure DevOps: Secure file](./images/azure-devops-secure-file.png)
-
-See [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files) for more information.
 
 ### Configuring the VM as a Resource
 
@@ -258,6 +252,12 @@ client_secret = "0000-0000-0000-0000-000000000000"
 tenant_id = "00000000-0000-0000-0000-000000000000"
 ```
 
+Upload your `terraform.tfvars` file as a secure file so you can use it in the pipeline:
+
+![Azure DevOps: Secure file](./images/azure-devops-secure-file.png)
+
+See [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files) for more information.
+
 ### Run the pipeline
 
 Go to the pipelines overview
@@ -294,15 +294,21 @@ To register your server, go to "Agents management" in the "Settings" group of yo
 
 ![Azure Log Analytics workspace: Agents management](./images/azure-log-analytics-workspaces-agents-management.png)
 
-Now that the log agent is installed, go to "Advanced settings" to setup your custom log collector. Click on Data -> Custom Log -> Add +
+You need to wait a few minutes for the server to connect:
+
+![Azure Log Analytics workspace: Agents management](./images/azure-log-analytics-workspaces-agents-management-connected.png)
+
+Now that the log agent is installed, go to "Advanced settings" to setup your custom log collector:
 
 ![Custom Log Setup](./images/custom-logs-setup.png)
 
 You need to upload a sample log. Select one published as an artifact during the pipeline execution:
 
-![Selenium log](./images/azure-pipeline-selenium-log.png)
+![Selenium log](./images/azure-pipeline-artifacts.png)
 
-Select "" as the record delimiter and add `/var/log/selenium/selenium-test-*.log` as the log collections path.
+![Selenium log](./images/azure-pipeline-artifacts-selenium.png)
+
+Select "Timestamp" `YYYY-MM-DD HH:MM:SS` as the record delimiter and add `/var/log/selenium/selenium-test-*.log` as the log collections path.
 
 It can take up to 1 hour for the VM to be able to collect the logs.
 
@@ -413,6 +419,7 @@ The result set include the output of the execution of the Selenium Test Suite.
 - [Automating infrastructure deployments in the Cloud with Terraform and Azure Pipelines](https://azuredevopslabs.com/labs/vstsextend/terraform/)
 - [Terraform on Azure Pipelines Best Practices](https://julie.io/writing/terraform-on-azure-pipelines-best-practices/)
 - [Use Terraform to manage infrastructure deployment](https://docs.microsoft.com/en-us/azure/devops/pipelines/release/automate-terraform)
+- [Collect custom logs with Log Analytics agent in Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/data-sources-custom-logs)
 
 ## Requirements
 
