@@ -15,6 +15,8 @@
   - [Run the pipeline](#run-the-pipeline)
   - [Configure Azure Monitor](#configure-azure-monitor)
   - [Configure Azure Log Analytics](#configure-azure-log-analytics)
+    - [Setting up custom logs](#setting-up-custom-logs)
+    - [Querying custom logs](#querying-custom-logs)
 - [Clean-up](#clean-up)
 - [Screenshots](#screenshots)
   - [Environment creation & deployment](#environment-creation--deployment)
@@ -260,21 +262,57 @@ tenant_id = "00000000-0000-0000-0000-000000000000"
 
 Go to the pipelines overview
 
-![Pipelines](./images/azure-devops-pipelines.png
-)
+![Pipelines](./images/azure-devops-pipelines.png)
 
 Run the new pipeline:
 
-![Run pipeline](./images/azure-devops-run-pipeline.png
-)
+![Run pipeline](./images/azure-devops-run-pipeline.png)
 
 ### Configure Azure Monitor
 
-TBD
+Go to the Azure Portal, select your application service and create a new alert in the "Monitoring" group:
+
+![Azure Monitor: New alert rule](./images/azure-monitor-new-alert-rule.png)
+
+![Azure Monitor: Create alert rule](./images/azure-monitor-create-alert-rule.png)
+
+Execute the Azure Pipeline to trigger an alert.
 
 ### Configure Azure Log Analytics
 
-TBD
+Go to the Azure Portal and create a new Azure Log Analytics workspace:
+
+![Azure Log Analytics workspaces](./images/azure-log-analytics-workspaces.png)
+
+![Azure Log Analytics workspaces: Create new](./images/azure-log-analytics-workspaces-new.png)
+
+#### Setting up custom logs
+
+In order to collect custom logs from a VM or service, it needs to be registered with Log Analytics.
+
+To register your server, go to "Agents management" in the "Settings" group of your Log Analytics workspace. Then copy the script for Linux servers and run it on your server to install:
+
+![Azure Log Analytics workspace: Agents management](./images/azure-log-analytics-workspaces-agents-management.png)
+
+Now that the log agent is installed, go to "Advanced settings" to setup your custom log collector. Click on Data -> Custom Log -> Add +
+
+![Custom Log Setup](./images/custom-logs-setup.png)
+
+You need to upload a sample log. Select one published as an artifact during the pipeline execution:
+
+![Selenium log](./images/azure-pipeline-selenium-log.png)
+
+Select "" as the record delimiter and add `/var/log/selenium/selenium-test-*.log` as the log collections path.
+
+It can take up to 1 hour for the VM to be able to collect the logs.
+
+#### Querying custom logs
+
+To query the custom logs, go to "Logs" in the "General" group of your Log Analytics workspace.
+
+Select your custom log and run it:
+
+![Custom Log Query](./images/custom-log-query.png)
 
 ## Clean-up
 
@@ -323,34 +361,49 @@ Publish test results step:
 
 ![Postman: Publish test results](./images/postman-publish-test-results.png)
 
-
 #### Selenium
 
-A screenshot of the successful execution of the Test Suite on a VM in Azure DevOps should contain which user logged in, which items were added to the cart, and which items were removed from the cart:
+A screenshot of the successful execution of the Test Suite on a VM in Azure DevOps containing which user logged in, which items were added to the cart, and which items were removed from the cart:
 
 ![Selenium](./images/selenium-tests.png)
 
 #### JMeter
 
-A screenshot of the log output of JMeter when executed by the CI/CD pipeline (ensure the timestamp is visible by toggle timestamps for the specific job) should contain the lines that start with “summary” and “Starting standalone test @”:
+A screenshot of the log output of JMeter when executed by the CI/CD pipeline (the timestamp is visible by toggle timestamps for the specific job) containing the lines that start with “summary” and “Starting standalone test @”:
 
 ![JMeter: Stress test execution](./images/jmeter-stress-test-execution.png)
 
+![JMeter: Stress test report](./images/jmeter-stress-test-report.png)
+
 ![JMeter: Endurance test execution](./images/jmeter-endurance-test-execution.png)
+
+![JMeter: Endurance test report](./images/jmeter-endurance-test-report.png)
 
 ### Monitoring & observability
 
 #### Azure Monitor
 
-Screenshots of the email received when the alert is triggered, the graphs of the resource that the alert was triggered for (be sure to include timestamps for the email and the graphs), and the alert rule, which will show the resource, condition, action group, alert name, and severity. Screenshots for the resource’s metrics will correspond to the approximate time that the alert was triggered.
+Screenshots of the email received when the alert is triggered (including timestamps):
 
-TBD
+![Azure Monitor: Email](./images/azure-monitor-email-alert.png)
+
+The graphs of the resource that the alert was triggered for (including timestamps):
+
+![Azure Monitor: Graphs](./images/azure-monitor-metrics.png)
+
+The alert rule shows the resource, condition, action group, alert name, and severity:
+
+![Azure Monitor: Alert rule](./images/azure-monitor-create-alert-rule.png)
+
+Screenshots for the resource’s metrics correspond to the approximate time that the alert was triggered.
 
 #### Azure Log Analytics
 
-Screenshots of log analytics queries and result sets which will show specific output of the Azure resource. The result set will include the output of the execution of the Selenium Test Suite (be sure to include timestamps).
+Screenshot of log analytics query and the result sets which shows specific output of the Azure resource:
 
-TBD
+![Custom Log Query](./images/custom-log-query.png)
+
+The result set include the output of the execution of the Selenium Test Suite.
 
 ## References
 
