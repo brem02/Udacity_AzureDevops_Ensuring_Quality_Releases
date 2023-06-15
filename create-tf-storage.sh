@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RESOURCE_GROUP_NAME=tstate
+RESOURCE_GROUP_NAME=Azuredevops
 STORAGE_ACCOUNT_NAME=tstate$RANDOM
 CONTAINER_NAME=tstate
 
